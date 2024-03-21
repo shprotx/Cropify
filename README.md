@@ -23,7 +23,7 @@ allprojects {
 
 ```
 dependencies {
-  implementation 'com.github.moyuruaizawa:cropify:${cropifyVersion}'
+  implementation("com.github.shprotx:Cropify:9f6ed84684")
 }
 ```
 
