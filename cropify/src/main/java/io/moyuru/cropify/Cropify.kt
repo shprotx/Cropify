@@ -124,7 +124,6 @@ fun Cropify(
       option = option,
       modifier = Modifier.matchParentSize(),
     )
-    Log.d("TAG", "Cropify: ${state.imageRect} , | ${state.frameRect}")
     ImageOverlay(
       offset = state.frameRect.topLeft,
       size = state.frameRect.size,

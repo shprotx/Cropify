@@ -37,6 +37,7 @@ val state = rememberCropifyState()
 Cropify(
   bitmap = imageResource(R.drawable.bitmap),
   state = state,
+  initFullSizeFrame = true, // if you want max size frame at start
   onImageCropped = {},
 )
 ```
@@ -49,6 +50,7 @@ val state = rememberCropifyState()
 Cropify(
   uri = imageUri,
   state = state,
+  initFullSizeFrame = true, // if you want max size frame at start
   onImageCropped = {},
   onFailedToLoadImage = {}
 )
