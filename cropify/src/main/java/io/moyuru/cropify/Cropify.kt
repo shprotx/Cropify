@@ -3,6 +3,7 @@ package io.moyuru.cropify
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.Composable
@@ -33,6 +34,7 @@ import kotlinx.coroutines.withContext
 fun Cropify(
   uri: Uri,
   state: CropifyState,
+  initFullSizeFrame: Boolean = false,
   onImageCropped: (ImageBitmap) -> Unit,
   onFailedToLoadImage: (Throwable) -> Unit,
   modifier: Modifier = Modifier,
@@ -57,6 +59,7 @@ fun Cropify(
       Cropify(
         bitmap = requireNotNull(sampledImageBitmap).imageBitmap,
         state = state,
+        initFullSizeFrame = initFullSizeFrame,
         onImageCropped = onImageCropped,
         option = option,
         modifier = Modifier.matchParentSize()
@@ -69,6 +72,7 @@ fun Cropify(
 fun Cropify(
   bitmap: ImageBitmap,
   state: CropifyState,
+  initFullSizeFrame: Boolean = false,
   onImageCropped: (ImageBitmap) -> Unit,
   modifier: Modifier = Modifier,
   option: CropifyOption = CropifyOption(),
@@ -110,7 +114,8 @@ fun Cropify(
     LaunchedEffect(bitmap, option.frameAspectRatio, constraints) {
       val canvasSize = Size(constraints.maxWidth.toFloat(), constraints.maxHeight.toFloat())
       state.imageRect = calculateImagePosition(bitmap, canvasSize)
-      state.frameRect = calculateFrameRect(state.imageRect, canvasSize, option.frameAspectRatio)
+      if (initFullSizeFrame) state.frameRect = state.imageRect
+      else state.frameRect = calculateFrameRect(state.imageRect, canvasSize, option.frameAspectRatio)
     }
     ImageCanvas(
       bitmap = bitmap,
@@ -119,6 +124,7 @@ fun Cropify(
       option = option,
       modifier = Modifier.matchParentSize(),
     )
+    Log.d("TAG", "Cropify: ${state.imageRect} , | ${state.frameRect}")
     ImageOverlay(
       offset = state.frameRect.topLeft,
       size = state.frameRect.size,
